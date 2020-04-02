@@ -13,15 +13,5 @@ namespace CC.Areas.Admin.Controllers
         {
             return View();
         }
-
-        public IActionResult Categories()
-        {
-            return View();
-        }
-
-        public IActionResult Products()
-        {
-            return View();
-        }
     }
 }
