@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using CC.Models.ContactModels;
+using CC.Models;
 
 namespace CC
 {
@@ -52,6 +53,8 @@ namespace CC
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+            services.AddIdentity<User, IdentityRole>();
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
