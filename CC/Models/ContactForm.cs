@@ -15,7 +15,7 @@ namespace CC.Models
         public string Name { get; set; }
         [Required]
         public string Email { get; set; }
-        public int Phone { get; set; }
+        public int? Phone { get; set; }
         [Required]
         [StringLength(30, MinimumLength = 3)]
         public string Subject { get; set; }
