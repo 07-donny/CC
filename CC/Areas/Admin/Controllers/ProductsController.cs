@@ -8,11 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using CC.Data;
 using CC.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace CC.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
 
     public class ProductsController : Controller
     {
@@ -90,8 +92,26 @@ namespace CC.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Category,Description,Rarity")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Category,Description,Rarity")] Product product, IFormFile imageUpload)
         {
+            string g = Guid.NewGuid().ToString();
+
+            var fileExtension = Path.GetExtension(imageUpload.FileName);
+            var filePath = Url.Content("wwwroot/uploads/images/products/" + g + "." + product.Id + fileExtension);
+
+            product.ImageFileName = g + "." + product.Id + fileExtension;
+
+
+
+            if (imageUpload.Length > 0)
+            {
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageUpload.CopyToAsync(stream);
+                }
+            }
+
+
             if (id != product.Id)
             {
                 return NotFound();

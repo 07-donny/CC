@@ -10,43 +10,22 @@ using CC.Models;
 
 namespace CC.Controllers
 {
-    public class ProductsController : Controller
+    public class GalleryController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ProductsController(ApplicationDbContext context)
+        public GalleryController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Products
-        public async Task<IActionResult> Index(string productCategory, string searchString)
+        // GET: Gallery
+        public async Task<IActionResult> Index()
         {
-            IQueryable<string> categoryQuery = from m in _context.Product orderby m.Category select m.Category;
-
-            var products = from m in _context.Product select m;
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                
-                products = products.Where(s => s.Name.Contains(searchString));
-            }
-
-            if (!string.IsNullOrEmpty(productCategory))
-            {
-                products = products.Where(x => x.Category == productCategory);
-            }
-
-            var productCategoryVM = new ProductCategoryViewModel
-            {
-                Categories = new SelectList(await categoryQuery.Distinct().ToListAsync()),
-                Products = await products.ToListAsync()
-            };
-
-            return View(productCategoryVM);
+            return View(await _context.Product.ToListAsync());
         }
 
-        // GET: Products/Details/5
+        // GET: Gallery/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -64,18 +43,18 @@ namespace CC.Controllers
             return View(product);
         }
 
-        // GET: Products/Create
+        // GET: Gallery/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Products/Create
+        // POST: Gallery/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price,Category,Description,Rarity")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,Price,Category,Description,Rarity,ImageFileName")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +65,7 @@ namespace CC.Controllers
             return View(product);
         }
 
-        // GET: Products/Edit/5
+        // GET: Gallery/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -102,12 +81,12 @@ namespace CC.Controllers
             return View(product);
         }
 
-        // POST: Products/Edit/5
+        // POST: Gallery/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Category,Description,Rarity")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Category,Description,Rarity,ImageFileName")] Product product)
         {
             if (id != product.Id)
             {
@@ -137,7 +116,7 @@ namespace CC.Controllers
             return View(product);
         }
 
-        // GET: Products/Delete/5
+        // GET: Gallery/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -155,7 +134,7 @@ namespace CC.Controllers
             return View(product);
         }
 
-        // POST: Products/Delete/5
+        // POST: Gallery/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

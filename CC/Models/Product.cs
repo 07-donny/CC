@@ -24,11 +24,12 @@ namespace CC.Models
         [RegularExpression(@"^[A-Z]+[a-zA-Z""'\s-]*$")]
         public string Category { get; set; }
 
-        [RegularExpression(@"^[A-Z]+[a-zA-Z""'\s-]*$")]
         public string Description { get; set; }
 
         [RegularExpression(@"^[A-Z]+[a-zA-Z""'\s-]*$")]
         [StringLength(20)]
         public string Rarity { get; set; }
+        public string ImageFileName { get; set; }
+
     }
 }

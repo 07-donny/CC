@@ -18,6 +18,5 @@ namespace CC.Data
 
         public DbSet<CC.Models.Category> Category { get; set; }
 
-        public DbSet<Image> Images { get; set; }
     }
 }

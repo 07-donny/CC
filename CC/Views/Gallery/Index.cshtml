@@ -1,0 +1,40 @@
+﻿@model IEnumerable<CC.Models.Product>
+
+@{
+    ViewData["Title"] = "Gallery";
+}
+
+<h1>Gallery</h1>
+
+<div class="gallery">
+
+    @foreach (var item in Model)
+    {
+        @if (item.ImageFileName != null )
+        {
+            <div class="gallery-image">
+                <img src="~/uploads/images/products/@item.ImageFileName" />
+            </div>
+        }
+
+    }
+</div>
+
+
+<style>
+    .gallery{
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .gallery-image{
+        height: 300px;
+        width: 400px;
+        overflow: hidden;
+    }
+
+    .gallery-image img{
+        height: auto;
+        width: 400px;
+    }
+</style>
