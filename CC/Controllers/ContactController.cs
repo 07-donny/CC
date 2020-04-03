@@ -42,7 +42,7 @@ namespace CC.Controllers
                 return RedirectToAction("Index");
             } else
             {
-                return Index();
+                return View();
             }
         }
 
