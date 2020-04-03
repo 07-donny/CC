@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using CC.Models.ContactModels;
 
 namespace CC
 {
@@ -29,6 +30,25 @@ namespace CC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            EmailServerConfiguration config = new EmailServerConfiguration
+            {
+                SmtpPassword = "Wachtwoord743!g",
+                SmtpServer = "smtp.gmail.com",
+                 
+                SmtpUsername = "donnys.test.mail@gmail.com",
+            };
+
+            EmailAddress FromEmailAddress = new EmailAddress
+            {
+                Address = "donnys.test.mail@gmail.com",
+                Name = "Donny"
+            };
+
+            services.AddSingleton<EmailServerConfiguration>(config);
+            services.AddTransient<IEmailService, MailKitEmailService>();
+            services.AddSingleton<EmailAddress>(FromEmailAddress);
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));

@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "Contact";
+}
+@model CC.Models.ContactForm
+
+<h1>Contact</h1>
+
+<form asp-action="Index" asp-controller="ContactForm" method="post">
+    <div>
+        <label asp-for="Name">Name:</label>
+        <input type="text" asp-for="Name" />
+    </div>
+    <div>
+        <label asp-for="Email">Email address:</label>
+        <input type="text" asp-for="Email" />
+    </div>
+    <div>
+        <label asp-for="Phone">Phone number (optional):</label>
+        <input type="text" asp-for="Phone" />
+    </div>
+    <div>
+        <label asp-for="Subject">Subject:</label>
+        <input type="text" asp-for="Subject" />
+    </div>
+    <div>
+        <label asp-for="Message">Message:</label>
+        <input type="text" asp-for="Message" />
+    </div>
+    <input type="submit" value="Send Message" />
+</form>
+

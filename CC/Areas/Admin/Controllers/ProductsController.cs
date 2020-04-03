@@ -7,10 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CC.Data;
 using CC.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CC.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
