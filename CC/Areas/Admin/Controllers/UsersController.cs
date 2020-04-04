@@ -12,6 +12,7 @@ namespace CC.Areas.Admin.Controllers
     public class UsersController : Controller
     {
         UserManager<User> _userManager;
+
         public UsersController(UserManager<User> userManager)
         {
             _userManager = userManager;
@@ -21,12 +22,15 @@ namespace CC.Areas.Admin.Controllers
            var users = _userManager.Users;
 
             List<UserViewModel> userVM = new List<UserViewModel>();
+
             foreach (User user in users)
             {
-                UserViewModel uvm = new UserViewModel();
-                uvm.Id = user.Id;
-                uvm.Email = user.Email;
-                uvm.Roles = _userManager.GetRolesAsync(user).Result;
+                UserViewModel uvm = new UserViewModel
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Roles = _userManager.GetRolesAsync(user).Result
+                };
 
                 userVM.Add(uvm);
             }
