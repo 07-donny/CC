@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CC.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace CC.Data
 {
     public class Seed
     {
-        public static void SeedUsers(UserManager<IdentityUser> userManager,
+        public static void SeedUsers(UserManager<User> userManager,
             RoleManager<IdentityRole> roleManager)
         {
             if (roleManager.FindByNameAsync("Admin").Result == null)
@@ -19,7 +20,7 @@ namespace CC.Data
 
             if(userManager.FindByEmailAsync("admin@admin.com").Result == null)
             {
-                IdentityUser user = new IdentityUser
+                User user = new User
                 {
                     UserName = "admin@admin.com",
                     Email = "admin@admin.com"

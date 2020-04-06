@@ -7,7 +7,7 @@ namespace CC.Models
 {
     public class UserViewModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Email { get; set; }
 
         public IList<string> Roles { get; set; }
