@@ -16,6 +16,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using CC.Models.ContactModels;
 using CC.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CC
 {
@@ -31,7 +32,7 @@ namespace CC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            //Email settings
             EmailServerConfiguration config = new EmailServerConfiguration
             {
                 SmtpPassword = "Wachtwoord743!g",
@@ -49,16 +50,31 @@ namespace CC
             services.AddSingleton<EmailServerConfiguration>(config);
             services.AddTransient<IEmailService, MailKitEmailService>();
             services.AddSingleton<EmailAddress>(FromEmailAddress);
+            //----------------------
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultUI()
             .AddDefaultTokenProviders();
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest)
+           .AddRazorPagesOptions(options =>
+             {
+                 options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
+                 options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
+             });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Identity/Account/Login";
+                options.LogoutPath = $"/Identity/Account/Logout";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+            });
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -85,8 +101,9 @@ namespace CC
             app.UseRouting();
 
             app.UseAuthentication();
-            Seed.SeedUsers(userManager, roleManager);
             app.UseAuthorization();
+
+            Seed.SeedUsers(userManager, roleManager);
 
             app.UseEndpoints(endpoints =>
             {
@@ -99,7 +116,7 @@ namespace CC
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                //endpoints.MapRazorPages();
+                endpoints.MapRazorPages();
             });
         }
     }
